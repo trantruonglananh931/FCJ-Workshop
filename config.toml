@@ -1,5 +1,6 @@
 # Change the default theme to be use when building the site with Hugo
 baseURL = "https://trantruonglananh931.github.io/FCJ-Workshop/"
+canonifyURLs = true
 theme = "hugo-theme-learn"
 
 # For search functionality
@@ -12,7 +13,7 @@ home = [ "HTML", "RSS", "JSON"]
   # Git hub repo link
   editURL = ""
   description = ""
-  author = "journeyoftheaverageguy@gmail.com"
+  author = "trantruonglananh931@gmail.com"
   showVisitedLinks = true
   disableBreadcrumb = false
   disableNextPrev = false
