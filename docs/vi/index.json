@@ -1,0 +1,155 @@
+[
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/",
+	"title": "Amazon RDS MySQL",
+	"tags": [],
+	"description": "",
+	"content": "Làm việc với Amazon RDS MySQL Tổng quan Trong bài lab này, bạn sẽ tìm hiểu các khái niệm cơ bản và thực hành về RDS trong Amazon Console.\nNội dung Giới thiệu Các bước chuẩn bị Tạo kết nối đến RDS Thực hiện kiểm thử Dọn dẹp tài nguyên "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/2-prerequiste/2.1-createandsetup/",
+	"title": "Chuẩn bị Database và cấu hình Security",
+	"tags": [],
+	"description": "",
+	"content": "Việc chọn đúng loại cơ sở dữ liệu là nền tảng để triển khai các kỹ thuật bảo mật phù hợp. Trong phạm vi workshop này, ta chọn Amazon RDS với engine MySQL do dễ cấu hình, phổ biến và hỗ trợ đầy đủ các tính năng mã hóa và kiểm soát truy cập.\nNội dung Tạo RDS Tạo CloudWatch Cài đặt Security group Tạo Parameter group "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/1-introduce/",
+	"title": "Giới thiệu",
+	"tags": [],
+	"description": "",
+	"content": "Trong thời đại số hóa, cơ sở dữ liệu đóng vai trò trung tâm trong hầu hết các hệ thống thông tin. Khi dữ liệu ngày càng trở nên nhạy cảm và có giá trị, các yêu cầu về bảo mật cơ sở dữ liệu cũng trở nên khắt khe hơn, không chỉ từ phía kỹ thuật mà còn từ các tiêu chuẩn tuân thủ như GDPR, SOX hay HIPAA.\nDatabase Security Hardening với Encryption và Access Controls nhằm mục tiêu xây dựng một giải pháp bảo mật toàn diện cho hệ thống cơ sở dữ liệu trên nền tảng AWS Cloud, thông qua:\nMã hóa dữ liệu (Encryption) khi lưu trữ và truyền tải để ngăn chặn truy cập trái phép. Kiểm soát truy cập (Access Controls) theo nguyên tắc phân quyền chi tiết và tối thiểu đặc quyền. Ghi log kiểm toán (Audit Logging) để theo dõi hoạt động và hỗ trợ điều tra bảo mật. Quản lý khóa mã hóa (KMS) và đánh giá rủi ro thường xuyên. Báo cáo và tuân thủ các tiêu chuẩn bảo mật theo yêu cầu của doanh nghiệp hoặc pháp lý. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/3-connect/3.1-connect/",
+	"title": "Kết nối đến RDS",
+	"tags": [],
+	"description": "",
+	"content": " Truy cập giao diện quản trị dịch vụ RDS Click Database. Chọn vào Database đã tạo. Tại mục Connectivity \u0026amp; security. Lưu lại địa chỉ Endpoint. Mở terminal hoặc các công cụ như MySQL Workbench, DBeaver Gõ lệnh mysql -h endpoint -P 3306 -u username -p. Thay endpoint bằng địa chỉ endpoint vừa lưu, username bằng username lúc tạo rds. Sau đó nhập mật khẩu. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/4-penetration/4.1-userswithdb/",
+	"title": "Phân quyền user với database",
+	"tags": [],
+	"description": "",
+	"content": "Cả 2 user là admin1 và auditor đều chỉ có quyền với database workshop_db.\nThực hiện kiểm tra quyền database với 2 user Đăng nhập bằng tài khoản admin1 Xem các database hiện có show databases;. Chỉ có database workshop_db. Làm tương tự với tài khoản auditor Kết quả vẫn chỉ có workshop_db. Tiếp theo chúng ta sẽ truy cập vào workshop_db để kiểm tra với các query.\n"
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/3-connect/3.2-createdbanduser/3.2.1-createtable/",
+	"title": "Tạo bảng trong database",
+	"tags": [],
+	"description": "",
+	"content": "Tạo bảng trong database. Để tạo được bảng ta sẽ vào database đã được tạo ở lúc cấu hình RDS. Sử dụng lệnh USE your_database_name;, với tên database bạn đã cấu hình lúc tạo RDS. Tạo 1 bảng users đơn giản để sử dụng. CREATE TABLE users ( id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(50) NOT NULL, email VARCHAR(100) NOT NULL UNIQUE, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ); Dùng lệnh SHOW TABLES; để xem đã được tạo thành công hay chưa. Thêm dữ liệu vào bảng users. INSERT INTO users (username, email) VALUES (\u0026lsquo;alice\u0026rsquo;, \u0026lsquo;alice@example.com\u0026rsquo;), (\u0026lsquo;bob\u0026rsquo;, \u0026lsquo;bob@example.com\u0026rsquo;); Dữ liệu dc mã hoá at rest vì đã enable encryption. Dùng lệnh SELECT * FROM users; để kiểm tra. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/2-prerequiste/2.1-createandsetup/2.1.1-createdatabase/",
+	"title": "Tạo Database ",
+	"tags": [],
+	"description": "",
+	"content": "Tạo Database Lab Database Truy cập giao diện quản trị dịch vụ RDS Click Create Database. Tại trang Create Database. Tại mục Choose a database creation method, chọn Standard create. Tại mục Engine options, chọn MySQL. Bỏ chọn Show only versions that support the Multi-AZ DB cluster và Show only versions that support the Amazon RDS Optimized Writes. Engine version sử dụng phiên bản mới nhất và bỏ chọn Enable RDS Extended Support. Tại mục Template, chọn Free Tier. Tại phần Setting. Tại mục DB instance identifier, điền tên database(tự chọn). Tại mục Master username, điền admin. Tại mục Credentials management, chọn Self managed. Tại mục Master password, điền mật khẩu. Tại mục Confirm master password, điền lại mật khẩu đã nhập ở trên. Tại phần Instance configuration. Chọn db.t3.micro. Giữ nguyên phần còn lại. Tại phần Storage. Click vào Additional storage configuration. Bỏ chọn Enable storage autoscaling. Tại phần Connectivity. Tại phần Public access, chọn Yes. Giữ nguyên phần còn lại. Tại phần Database authentication. Chọn Password and IAM database authentication. Tại phần Monitoring. Tại phần Log exports, chọn Audit log, Slow query log và iam-db-auth-error log. Tại phần Additional configuration. Ở mục Initial database name, điền tên của database(tự chọn). Kéo xuống cuối trang, click Create database. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/2-prerequiste/",
+	"title": "Các bước chuẩn bị",
+	"tags": [],
+	"description": "",
+	"content": "Trước khi triển khai giải pháp bảo mật cơ sở dữ liệu trên AWS, cần thực hiện một số bước chuẩn bị để đảm bảo quá trình cấu hình, kiểm thử và đánh giá diễn ra thuận lợi. Mục tiêu là thiết lập một môi trường tối thiểu, rõ ràng, dễ kiểm soát và ít tốn kém.\nNội dung Chuẩn bị cơ sở dữ liệu Tạo IAM user "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/4-penetration/4.2-userwithquery/",
+	"title": "Phân quyền user với quyền query trong database",
+	"tags": [],
+	"description": "",
+	"content": "Trong bước này, chúng ta sẽ thực hiện query với 2 user với 2 quyền khác nhau.\nSử dụng use workshop_db để sử dụng database được phân quyền Kiểm tra quyền select với auditor select * from users;. Kiểm tra các quyền insert, delete, update với auditor. INSERT INTO users (username, email, created_at) VALUES (\u0026lsquo;charlie\u0026rsquo;, \u0026lsquo;charlie@example.com\u0026rsquo;, NOW());. DELETE FROM users WHERE id = 2;. UPDATE users SET email = \u0026lsquo;bob@newmail.com\u0026rsquo; WHERE username = \u0026lsquo;bob\u0026rsquo;;. auditor chỉ có quyền select với database workshop_db.\nKiểm tra quyền select với admin1 select * from users;. Kiểm tra các quyền insert, delete, update với admin1. INSERT INTO users (username, email, created_at) VALUES (\u0026lsquo;charlie\u0026rsquo;, \u0026lsquo;charlie@example.com\u0026rsquo;, NOW());. DELETE FROM users WHERE id = 2;. UPDATE users SET email = \u0026lsquo;bob@newmail.com\u0026rsquo; WHERE username = \u0026lsquo;bob\u0026rsquo;;. admin1 có quyền select và insert với database workshop_db.\n"
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/2-prerequiste/2.1-createandsetup/2.1.2-createcloudwatch/",
+	"title": "Tạo CloudWatch",
+	"tags": [],
+	"description": "",
+	"content": "Tạo Dashboard trong CloudWatch Click Dashboard. Click Create dashboard. Đặt tên tùy chọn sau đó nhấn Create dashboard. Click chọn Line. Click Next. Tại trang Add metric graph. Click RDS. Click DBInstanceIdentifier. Tìm và chọn các metrics sau : DatabaseConnections, FreeStorageSpace, ReadIOPS, WriteIOPS. Click Create widget. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/3-connect/3.2-createdbanduser/",
+	"title": "Tạo database",
+	"tags": [],
+	"description": "",
+	"content": "Sau khi đăng nhập thành công vào RDS, sẽ có 1 database được tạo sẵn trong quá trình cấu hình RDS (là phần Initial database name ), lúc này sẽ thực hiện tạo thêm 1 database để thực hiện phần quyền với user.\nCreate database workshop_dm;. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/2-prerequiste/2.2-createiamuser/",
+	"title": "Tạo IAM User",
+	"tags": [],
+	"description": "",
+	"content": "Tạo IAM User Truy cập vào giao diện quản trị dịch vụ IAM Ở thanh điều hướng bên trái, click Users. Click Create user. Tại trang User details. Tại mục User name điền tên user. Click chọn Provide user access to the AWS Management Console - optional. Tại mục Are you providing console access to a person? chọn I want to create an IAM user. Tại mục Console password chọn Custom password. Điền mật khẩu vào ô trống, có thể chọn Show password để xem mật khẩu. Click bỏ chọn Users must create a new password at next sign-in - Recommended. Click Next. Tại trang Set permissions. Tại mục Permissions options chọn Attach policies directly. Tại mục Permissions policies, tìm và chọn AmazonRDSFullAccess, CloudWatchLogsFullAccess và AWSKeyManagementServicePowerUser. Click Next. Tại trang Review and create. Kiểm tra lại đầy đủ và chọn Create user. Tại trang Retrieve password. Nhấn Show để xem mật khẩu. Có thể tải User name và mật khẩu về bằng cách bấm vào Download .csv file. Click Return to users list để hoàn tất. Tiếp theo chúng ta sẽ thực hiện tương tự để tạo thêm 1 IAM User nữa với:\nTên user : rds-auditor. Permissions policies : AmazonRDSReadOnlyAccess, CloudWatchReadOnlyAccess. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/3-connect/3.2-createdbanduser/3.2.2-createusers/",
+	"title": "Tạo Users",
+	"tags": [],
+	"description": "",
+	"content": "Tạo Users để phân quyền trong database Chúng ta sẽ tạo 2 users: admin auditor Tạo 2 users là admin1 và auditor Sử dụng lệnh create user\u0026rsquo;admin1\u0026rsquo;@\u0026rsquo;%\u0026rsquo; IDENTIFIED BY \u0026lsquo;admin1\u0026rsquo;; để tạo user admin1. Sử dụng lệnh create user\u0026rsquo;auditor\u0026rsquo;@\u0026rsquo;%\u0026rsquo; IDENTIFIED BY \u0026lsquo;auditor\u0026rsquo;; để tạo user auditor. Gán quyền cho user. Gán cho admin1 quyền đọc và thêm : GRANT SELECT, INSERT ON workshop_db. TO \u0026lsquo;admin1\u0026rsquo;@\u0026rsquo;%\u0026rsquo;;* Gán cho auditor quyền ghi : GRANT SELECT ON workshop_db. TO \u0026lsquo;auditor\u0026rsquo;@\u0026rsquo;%\u0026rsquo;;* "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/4-penetration/4.3-iamuserwithrds/",
+	"title": "Quyền của IAM user với RDS",
+	"tags": [],
+	"description": "",
+	"content": " Truy cập giao diện quản trị dịch vụ IAM Click Users. Tại trang Users. Click rds-auditor. Tại trang rds-auditor Tại dòng ARN, sao chép phần số. Đăng xuất và đăng nhập lại với IAM Truy cập vào Aurora and RDS\u0026gt;Databases\u0026gt;securedb Thực hiện xóa RDS Click Actions \u0026gt; Delete. Bỏ chọn Create final snapshot và Retain automated backups. Chọn I acknowledge that upon instance deletion, automated backups, including system snapshots and point-in-time recovery, will no longer be available. Điền vào ô trống delete me. Click Delete. Không thể xóa RDS Không thể xóa vì không đủ quyền, auditor chỉ có quyền đọc. Click Modify Đổi tên của RDS Ở mục Summary of modifications Chọn Apply immediately. Click Modify DB instance. Không thành công vì IAM user không có quyền "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/2-prerequiste/2.1-createandsetup/2.1.3-settingsecurity/",
+	"title": "Sửa Security group",
+	"tags": [],
+	"description": "",
+	"content": "Sửa Security group Trong bước này chúng ta sẽ tiến hành sữa Security group để có thể kết nối bằng máy cá nhân.\nTruy cập giao diện quản trị dịch vụ RDS Click Database. Chọn vào Database đã tạo. Kéo xuống Security group rules. Click default (sg-0c641337c0b362188). Tại trang EC2 Console. Click sg-0c641337c0b362188. Click Edit inbound rules. Click Delete sau đó click Add rule Chỉnh Type thành MySQL/Aurora và Source thành MyIP. Click Save rules. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/3-connect/",
+	"title": "Tạo kết nối đến máy chủ RDS",
+	"tags": [],
+	"description": "",
+	"content": "Trong bước này, chúng ta sẽ thực hiện tạo kết nối đến RDS và thực hiện chuẩn bị môi trường để test demo.\nNội dung 3.1. Kết nối đến RDS 3.2. Tạo người dùng, bảng và database\n"
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/4-penetration/4.4-iamuserwitchcloud/",
+	"title": "Quyền của IAM user với CloudWatch",
+	"tags": [],
+	"description": "",
+	"content": " Truy cập giao diện quản trị dịch vụ CloudWatch Click Dashboard. Click RDS-Security-Metrics. Thực hiện xóa CloudWatch Click Actions \u0026gt; Delete dashboard. Sau khi hiện thông báo, nhấn Delete. Thực hiện xóa không thành công do không đủ quyền Thực hiện đổi tên CloudWatch Click Actions \u0026gt; Rename dashboard. Điền tên mới. Sau đó nhấn Rename dashboard. Thực hiện đổi tên không thành công do không đủ quyền. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/2-prerequiste/2.1-createandsetup/2.1.4-createpargroup/",
+	"title": "Tạo parameter group",
+	"tags": [],
+	"description": "",
+	"content": "Tạo parameter group Trong bước này chúng ta sẽ tiến hành tạo parameter group để có thể gửi log tới CloudWatch.\nTruy cập giao diện quản trị dịch vụ RDS Click Parameter groups. Click Create parameter group. Tại trang Parameter group details. Tại mục Parameter group name, điền custom-mysql8-log. Tại mục Description, điền Enable general log and export. Tại mục Engine type, chọn MySQL Community. Tại mục Parameter group family, chọn mysql8.0. Tại mục Type, chọn DB Parameter Group. Click Create. Nhấn vào custom-mysql8-log. Click Edit. Tại thanh tìm kiếm. Tìm general_log và chỉnh value thành 1. Tìm log_error_verbosity và chỉnh value thành 3. Truy cập vào database của bạn Click vào Modify. Kéo xuống phần Additional configuration Tại phần DB parameter group chọn custom-mysql8-log. Click Continue. Mục Schedule modifications Click Apply immediately. Click Modify DB instance. Vào lại trang database Click Action. Click Reboot. Click Confirm. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/4-penetration/",
+	"title": "Thực hiện kiểm thử",
+	"tags": [],
+	"description": "",
+	"content": "Trong phần này chúng ta sẽ tiến hành kiểm tra mức độ phân quyền bảo mật của user đối với database và IAM user đối với RDS và CloudWatch.\nNội dung: User với database User với các câu truy vấn trong database IAM user với RDS IAM user với CloudWatch "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/5-cleanup/",
+	"title": "Dọn dẹp tài nguyên",
+	"tags": [],
+	"description": "",
+	"content": "Chúng ta sẽ tiến hành các bước sau để xóa các tài nguyên chúng ta đã tạo trong bài thực hành này. Sử dụng tài khoản đủ quyền hoặc dùng tài khoản email root.\nXóa RDS Truy cập giao diện quản trị dịch vụ RDS Truy cập vào Databases\u0026gt;securedb Thực hiện xóa Click Actions \u0026gt; Delete. Bỏ chọn Create final snapshot và Retain automated backups. Chọn I acknowledge that upon instance deletion, automated backups, including system snapshots and point-in-time recovery, will no longer be available. Điền vào ô trống delete me. Click Delete. Thông báo xóa thành công Xóa CloudWatch Truy cập giao diện quản trị dịch vụ CloudWatch Click Dashboard. Click RDS-Security-Metrics. Thực hiện xóa CloudWatch Click Actions \u0026gt; Delete dashboard. Sau khi hiện thông báo, nhấn Delete. Xóa thành công Xóa Parameter group Truy cập giao diện quản trị dịch vụ RDS Click Parameter group. Click chọn custom-mysql8-log Click Actions. Click Delete. Thực hiện xóa thành công "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/categories/",
+	"title": "Categories",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/vi/tags/",
+	"title": "Tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+}]

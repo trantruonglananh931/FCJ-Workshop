@@ -1,0 +1,155 @@
+[
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/",
+	"title": "Database Security Hardening with Encryption and Access Controls",
+	"tags": [],
+	"description": "",
+	"content": "Work with Amazon RDS MySQL Overall In this lab, you will learn the basic concepts and practice working with RDS in the Amazon Console.\nContent Introduction Preparation Connect to RDS Penetration test Clean up resources "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/3-connect/3.1-connect/",
+	"title": "Connect to RDS",
+	"tags": [],
+	"description": "",
+	"content": " Go to the RDS service management console Click Databases. Select the database you created. In the Connectivity \u0026amp; security section: Save the Endpoint address. Open a terminal or tools such as MySQL Workbench, DBeaver Run the command: mysql -h endpoint -P 3306 -u username -p. Replace endpoint with the saved endpoint address, and username with the username you created for RDS. Then enter the password. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/2-prerequiste/2.1-createandsetup/2.1.1-createdatabase/",
+	"title": "Create RDS",
+	"tags": [],
+	"description": "",
+	"content": "Create Database Lab Database Go to RDS service management console Click Create Database. At Create Database. In Choose a database creation method section, choose Standard create. In Engine options section, choose MySQL. Uncheck Show only versions that support the Multi-AZ DB cluster and Show only versions that support the Amazon RDS Optimized Writes. Engine version use the latest version and uncheck Enable RDS Extended Support. In Template section, choose Free Tier. At Setting. In DB instance identifier field, enter database name(or a username of your choice). In Master username field, enter admin. In Credentials management section, choose Self managed. In Master password field, enter password. In Confirm master password field, re-enter the password entered above. At Instance configuration. Choose db.t3.micro. Leave the remaining settings as default. At Storage. Click in Additional storage configuration. Uncheck Enable storage autoscaling. At Connectivity. In Public access, choose Yes. Leave the remaining settings as default. At Database authentication. Choose Password and IAM database authentication. At Monitoring. In Log exports, choose Audit log, Slow query log and iam-db-auth-error log. At Additional configuration. In Initial database name field, enter name of database(or a name of your choice). Scroll to the bottom of the page, click Create database. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/3-connect/3.2-createdbanduser/3.2.1-createtable/",
+	"title": "Create table in database",
+	"tags": [],
+	"description": "",
+	"content": "Create a table in the database. To create a table, first switch to the database that was created during the RDS configuration. Use the command USE your_database_name;, replacing your_database_name with the database name you set up when creating the RDS instance. Create a simple users table to work with: CREATE TABLE users ( id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(50) NOT NULL, email VARCHAR(100) NOT NULL UNIQUE, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ); Use SHOW TABLES; to verify that the table has been successfully created. Insert data into the users table: INSERT INTO users (username, email) VALUES (\u0026#39;alice\u0026#39;, \u0026#39;alice@example.com\u0026#39;), (\u0026#39;bob\u0026#39;, \u0026#39;bob@example.com\u0026#39;); The data is encrypted at rest because encryption was enabled. Use SELECT * FROM users; to check the inserted data. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/4-penetration/4.1-userswithdb/",
+	"title": "Granting User Permissions for the Database",
+	"tags": [],
+	"description": "",
+	"content": "Both admin1 and auditor users only have permissions for the workshop_db database.\nVerify Database Permissions for Both Users Log in with the admin1 account. View the available databases show databases; Only the workshop_db database is available. Repeat the process with the auditor account The result still shows only workshop_db. Next, we will access workshop_db to test with queries.\n"
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/1-introduce/",
+	"title": "Introduction",
+	"tags": [],
+	"description": "",
+	"content": "In the digital era, databases serve as the central backbone of most information systems. As data becomes increasingly sensitive and valuable, database security requirements have grown more stringent — not only from a technical perspective but also to meet compliance standards such as GDPR, SOX, and HIPAA.\nDatabase Security Hardening with Encryption and Access Controls aims to deliver a comprehensive security solution for database systems on the AWS Cloud platform by:\nEncrypting data at rest and in transit to prevent unauthorized access. Implementing access controls based on the principles of detailed role-based permissions and the principle of least privilege Enabling audit logging to monitor activities and support security investigations. Managing encryption keys (KMS) and performing regular risk assessments. Reporting and ensuring compliance with security standards as required by business or legal regulations. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/2-prerequiste/2.1-createandsetup/",
+	"title": "Preparing RDS and setup Security",
+	"tags": [],
+	"description": "",
+	"content": "Selecting the right type of database is fundamental to implementing appropriate security techniques. For the scope of this workshop, we choose Amazon RDS with the MySQL engine due to its ease of configuration, widespread adoption, and full support for encryption and access control features.\nContent Create RDS Create CloudWatch Setup Security group Create Parameter group "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/2-prerequiste/2.1-createandsetup/2.1.2-createcloudwatch/",
+	"title": "Create CloudWatch",
+	"tags": [],
+	"description": "",
+	"content": "Create Dashboard in CloudWatch Click Dashboard. Click Create dashboard. Enter a name of your choice, then click Create dashboard. Choose Line. Click Next. At form Add metric graph. Click RDS. Click DBInstanceIdentifier. Find and select the following metrics. : DatabaseConnections, FreeStorageSpace, ReadIOPS, WriteIOPS. Click Create widget. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/3-connect/3.2-createdbanduser/",
+	"title": "Create database",
+	"tags": [],
+	"description": "",
+	"content": "After successfully logging in to RDS, there will be one database already created during the RDS setup process (this is the Initial database name).\nNow, we will create an additional database to configure user permissions.\nCreate database workshop_dm; "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/2-prerequiste/2.2-createiamuser/",
+	"title": "Create IAM User",
+	"tags": [],
+	"description": "",
+	"content": "Create IAM User Go to the IAM service management console. In the left navigation pane, click Users. Click Create user. On the User details page: In User name, enter the desired username. Select Provide user access to the AWS Management Console - optional. For Are you providing console access to a person?, choose I want to create an IAM user. For Console password, select Custom password. Enter the password in the text box (optionally, select Show password to view it). Uncheck Users must create a new password at next sign-in - Recommended. Click Next. On the Set permissions page: Under Permissions options, choose Attach policies directly. In Permissions policies, search for and select AmazonRDSFullAccess, CloudWatchLogsFullAccess, and AWSKeyManagementServicePowerUser. Click Next. On the Review and create page: Review all settings and click Create user. On the Retrieve password page: Click Show to view the password. You can download the User name and password by clicking Download .csv file. Click Return to users list to complete the process. Next, repeat the same steps to create another IAM User with:\nUser name: rds-auditor. Permissions policies: AmazonRDSReadOnlyAccess, CloudWatchReadOnlyAccess. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/3-connect/3.2-createdbanduser/3.2.2-createusers/",
+	"title": "Create Users",
+	"tags": [],
+	"description": "",
+	"content": "Create Users for permission management in the database We will create 2 users: admin auditor Create two users: admin1 and auditor Use the command CREATE USER \u0026lsquo;admin1\u0026rsquo;@\u0026rsquo;%\u0026rsquo; IDENTIFIED BY \u0026lsquo;admin1\u0026rsquo;; to create the admin1 user. Use the command CREATE USER \u0026lsquo;auditor\u0026rsquo;@\u0026rsquo;%\u0026rsquo; IDENTIFIED BY \u0026lsquo;auditor\u0026rsquo;; to create the auditor user. Assign permissions to the users. Grant admin1 read and insert permissions:\nGRANT SELECT, INSERT ON workshop_db. TO \u0026lsquo;admin1\u0026rsquo;@\u0026rsquo;%\u0026rsquo;;* Grant auditor read-only permissions:\nGRANT SELECT ON workshop_db. TO \u0026lsquo;auditor\u0026rsquo;@\u0026rsquo;%\u0026rsquo;;* "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/2-prerequiste/",
+	"title": "Preparation ",
+	"tags": [],
+	"description": "",
+	"content": "Before implementing the database security solution on AWS, several preparatory steps should be taken to ensure that the configuration, testing, and evaluation processes run smoothly. The objective is to establish a minimal, well-defined, easily manageable, and cost-efficient environment.\nContent Prepare RDS Create IAM user "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/4-penetration/4.2-userwithquery/",
+	"title": "User Permissions with Query in the Database",
+	"tags": [],
+	"description": "",
+	"content": "In this step, we will execute queries using two users with different permission levels.\nUse use workshop_db to work with the assigned database Test SELECT permission with auditor select * from users; Test INSERT, DELETE, and UPDATE permissions with auditor INSERT INTO users (username, email, created_at) VALUES (\u0026lsquo;charlie\u0026rsquo;, \u0026lsquo;charlie@example.com\u0026rsquo;, NOW()); DELETE FROM users WHERE id = 2; UPDATE users SET email = \u0026lsquo;bob@newmail.com\u0026rsquo; WHERE username = \u0026lsquo;bob\u0026rsquo;; auditor only has SELECT permission on the workshop_db database.\nTest SELECT permission with admin1 select * from users; Test INSERT, DELETE, and UPDATE permissions with admin1 INSERT INTO users (username, email, created_at) VALUES (\u0026lsquo;charlie\u0026rsquo;, \u0026lsquo;charlie@example.com\u0026rsquo;, NOW()); DELETE FROM users WHERE id = 2; UPDATE users SET email = \u0026lsquo;bob@newmail.com\u0026rsquo; WHERE username = \u0026lsquo;bob\u0026rsquo;; admin1 has both SELECT and INSERT permissions on the workshop_db database.\n"
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/2-prerequiste/2.1-createandsetup/2.1.3-settingsecurity/",
+	"title": "Change Securtity group",
+	"tags": [],
+	"description": "",
+	"content": "Change Securtity group In this step, we will modify the Security Group to allow connections from your personal machine.\nGo to RDS service management console Click Database. Select the database you created. Scroll down Security group rules. Click default (sg-0c641337c0b362188). At EC2 Console. Click sg-0c641337c0b362188. Click Edit inbound rules. Click Delete, then click Add rule Change Type to MySQL/Aurora and Source to MyIP. Click Save rules. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/3-connect/",
+	"title": "Create connection to RDS",
+	"tags": [],
+	"description": "",
+	"content": "In this step, we will create a connection to the RDS instance and prepare the environment for demo testing.\nContents 3.1. Connect to RDS 3.2. Create user, table, and database\n"
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/4-penetration/4.3-iamuserwithrds/",
+	"title": "IAM User Permissions with RDS",
+	"tags": [],
+	"description": "",
+	"content": " Go to the IAM service management console Click Users. On the Users page: Click rds-auditor. On the rds-auditor page: Under ARN, copy the numeric portion. Log out and log back in with the IAM account. Navigate to Aurora and RDS \u0026gt; Databases \u0026gt; securedb Attempt to delete the RDS instance: Click Actions \u0026gt; Delete. Uncheck Create final snapshot and Retain automated backups. Select I acknowledge that upon instance deletion, automated backups, including system snapshots and point-in-time recovery, will no longer be available. Enter delete me in the confirmation field. Click Delete. Unable to delete RDS: Deletion failed due to insufficient permissions — auditor only has read access. Click Modify Attempt to rename the RDS instance. In Summary of modifications: Select Apply immediately. Click Modify DB instance. Operation failed — IAM user does not have the necessary permissions. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/2-prerequiste/2.1-createandsetup/2.1.4-createpargroup/",
+	"title": "Create parameter group",
+	"tags": [],
+	"description": "",
+	"content": "Create parameter group In this step, we will create a parameter group to enable sending logs to CloudWatch.\nGo to RDS service management console Click Parameter groups. Click Create parameter group. At the Parameter group details page: In Parameter group name, enter custom-mysql8-log. In Description, enter Enable general log and export. In Engine type, select MySQL Community. In Parameter group family, select mysql8.0. In Type, select DB Parameter Group. Click Create. Click custom-mysql8-log. Click Edit. In the search bar: Search for general_log and set its value to 1. Search for log_error_verbosity and set its value to 3. Go to your database: Click Modify. Scroll down to Additional configuration: In DB parameter group, select custom-mysql8-log. Click Continue. In the Schedule modifications section: Click Apply immediately. Click Modify DB instance. Go back to the database page: Click Action. Click Reboot. Click Confirm. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/4-penetration/4.4-iamuserwitchcloud/",
+	"title": "IAM User Permissions with CloudWatch",
+	"tags": [],
+	"description": "",
+	"content": " Go to the CloudWatch management console Click Dashboard. Click RDS-Security-Metrics. Attempt to delete the CloudWatch dashboard: Click Actions \u0026gt; Delete dashboard. When prompted, click Delete. Deletion failed due to insufficient permissions. Attempt to rename the CloudWatch dashboard: Click Actions \u0026gt; Rename dashboard. Enter a new name. Then click Rename dashboard. Rename action failed due to insufficient permissions. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/4-penetration/",
+	"title": "Penetration Testing",
+	"tags": [],
+	"description": "",
+	"content": "In this section, we will verify the security permission levels of database users for the database, and IAM users for RDS and CloudWatch.\nContents: User with Database User with Queries in Database IAM User with RDS IAM User with CloudWatch "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/5-cleanup/",
+	"title": "Clean Up Resources",
+	"tags": [],
+	"description": "",
+	"content": "We will perform the following steps to delete the resources created during this lab.\nUse an account with sufficient permissions or the AWS root account.\nDelete RDS Go to the RDS management console Navigate to Databases \u0026gt; securedb. Delete the RDS instance: Click Actions \u0026gt; Delete. Uncheck Create final snapshot and Retain automated backups. Check I acknowledge that upon instance deletion, automated backups, including system snapshots and point-in-time recovery, will no longer be available. Type delete me in the text box. Click Delete. Confirmation message showing the RDS instance was deleted successfully. Delete CloudWatch Dashboard Go to the CloudWatch management console Click Dashboard. Click RDS-Security-Metrics. Delete the dashboard: Click Actions \u0026gt; Delete dashboard. When prompted, click Delete. Confirmation message showing the dashboard was deleted successfully. Delete Parameter Group Go to the RDS management console Click Parameter group. Select custom-mysql8-log Click Actions. Click Delete. Confirmation message showing the parameter group was deleted successfully. "
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/categories/",
+	"title": "Categories",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://trantruonglananh931.github.io/FCJ-Workshop/tags/",
+	"title": "Tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+}]
